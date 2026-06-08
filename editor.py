@@ -61,7 +61,10 @@ class MapEditor:
             TileType.ITEM_STAFF.value: self.load_sprite("staff.png", fallback="artifact"),
             TileType.STANDING_TORCH.value: self.load_sprite("standing_torch.png", fallback="lit_torch"),
             TileType.WALL_TORCH.value: self.load_sprite("wall_torch.png", fallback="lit_torch"),
-            TileType.ENEMY_GHOST.value: self.load_sprite(ENEMY_GHOST_PATH, fallback="enemy")
+            TileType.ENEMY_GHOST.value: self.load_sprite(ENEMY_GHOST_PATH, fallback="enemy"),
+            TileType.WALL_BRICK_CRACKED.value: self.load_sprite(WALL_BRICK_CRACKED_PATH, fallback="cracked_brick"),
+            TileType.WALL_STONE_CRACKED.value: self.load_sprite(WALL_STONE_CRACKED_PATH, fallback="cracked_stone"),
+            TileType.WALL_WOOD_CRACKED.value: self.load_sprite(WALL_WOOD_CRACKED_PATH, fallback="cracked_wood"),
         }
         
         self.tile_names = {
@@ -119,6 +122,48 @@ class MapEditor:
                 pygame.draw.circle(surf, (200, 50, 50), (size[0]//2, size[1]//2), size[0]//3)
                 pygame.draw.circle(surf, (255, 255, 0), (size[0]//2 - 6, size[1]//2 - 4), 3)
                 pygame.draw.circle(surf, (255, 255, 0), (size[0]//2 + 6, size[1]//2 - 4), 3)
+            elif fallback == "cracked_brick":
+                # Draw brick wall base
+                surf.fill((200, 100, 50))
+                # Draw brick grid pattern
+                for row in range(0, size[1], 16):
+                    pygame.draw.line(surf, (100, 50, 20), (0, row), (size[0], row), 1)
+                for col in range(0, size[0], 16):
+                    pygame.draw.line(surf, (100, 50, 20), (col, 0), (col, size[1]), 1)
+                # Draw visible cracks across the wall
+                pygame.draw.line(surf, (40, 15, 5), (5, 10), (35, 40), 2)
+                pygame.draw.line(surf, (40, 15, 5), (40, 15), (55, 45), 2)
+                pygame.draw.line(surf, (40, 15, 5), (10, 50), (50, 58), 2)
+                # Add some branching cracks
+                pygame.draw.line(surf, (40, 15, 5), (35, 40), (50, 35), 1)
+                pygame.draw.line(surf, (40, 15, 5), (55, 45), (60, 55), 1)
+            elif fallback == "cracked_stone":
+                # Draw stone wall base
+                surf.fill((120, 120, 120))
+                # Add some texture variation
+                for _ in range(20):
+                    x, y = random.randint(0, size[0]), random.randint(0, size[1])
+                    pygame.draw.circle(surf, (100, 100, 100), (x, y), random.randint(1, 3))
+                # Draw visible cracks
+                pygame.draw.line(surf, (60, 60, 60), (8, 15), (32, 48), 2)
+                pygame.draw.line(surf, (60, 60, 60), (38, 12), (58, 52), 2)
+                pygame.draw.line(surf, (60, 60, 60), (15, 55), (48, 62), 2)
+                # Branching cracks
+                pygame.draw.line(surf, (60, 60, 60), (32, 48), (50, 45), 1)
+                pygame.draw.line(surf, (60, 60, 60), (58, 52), (62, 62), 1)
+            elif fallback == "cracked_wood":
+                # Draw wood wall base
+                surf.fill((139, 69, 19))
+                # Add wood grain texture
+                for i in range(0, size[1], 4):
+                    pygame.draw.line(surf, (120, 50, 10), (0, i), (size[0], i), 1)
+                # Draw visible cracks/splits in the wood
+                pygame.draw.line(surf, (70, 30, 5), (6, 8), (28, 42), 2)
+                pygame.draw.line(surf, (70, 30, 5), (42, 18), (56, 50), 2)
+                pygame.draw.line(surf, (70, 30, 5), (12, 58), (46, 64), 2)
+                # Branching splits
+                pygame.draw.line(surf, (70, 30, 5), (28, 42), (45, 40), 1)
+                pygame.draw.line(surf, (70, 30, 5), (56, 50), (60, 60), 1)
             elif fallback == "none":
                 return None
             else:
@@ -330,9 +375,6 @@ class MapEditor:
                         if val == TileType.WALL_BRICK.value: t_col = (200, 100, 50)
                         elif val == TileType.WALL_STONE.value: t_col = (120, 120, 120)
                         elif val == TileType.WALL_WOOD.value: t_col = (139, 69, 19)
-                        elif val == TileType.WALL_BRICK_CRACKED.value: t_col = (150, 50, 30)
-                        elif val == TileType.WALL_STONE_CRACKED.value: t_col = (80, 80, 80)
-                        elif val == TileType.WALL_WOOD_CRACKED.value: t_col = (90, 45, 10)
                         elif val == TileType.FORCE_FIELD.value: t_col = (0, 255, 255)
                         elif val == TileType.DOOR.value: t_col = (255, 200, 50)
                         elif val == TileType.DOOR_SILVER.value: t_col = (200, 200, 200)
@@ -393,9 +435,6 @@ class MapEditor:
                     if val == TileType.WALL_BRICK.value: t_col = (200, 100, 50)
                     elif val == TileType.WALL_STONE.value: t_col = (120, 120, 120)
                     elif val == TileType.WALL_WOOD.value: t_col = (139, 69, 19)
-                    elif val == TileType.WALL_BRICK_CRACKED.value: t_col = (150, 50, 30)
-                    elif val == TileType.WALL_STONE_CRACKED.value: t_col = (80, 80, 80)
-                    elif val == TileType.WALL_WOOD_CRACKED.value: t_col = (90, 45, 10)
                     elif val == TileType.FORCE_FIELD.value: t_col = (0, 255, 255)
                     elif val == TileType.DOOR.value: t_col = (255, 200, 50)
                     elif val == TileType.DOOR_SILVER.value: t_col = (200, 200, 200)

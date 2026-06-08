@@ -46,6 +46,9 @@ class TileType(Enum):
 
 # --- Asset Paths ---
 WALL_TEXTURE_PATH = "Brick_Wall_64x64.png"
+WALL_BRICK_CRACKED_PATH = "brick_wall_cracked.png"
+WALL_STONE_CRACKED_PATH = "stone_wall_cracked.png"
+WALL_WOOD_CRACKED_PATH = "wood_wall_cracked.png"
 FLOOR_DIRT_PATH = "Dirt_Road_64x64.png"
 FLOOR_GRASS_PATH = "Grass_Ground_64x64.png" 
 CLOUD_SPRITE_PATH = "clouds_pixel.png"
